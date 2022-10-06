@@ -2,20 +2,26 @@ import { NextApiResponse } from 'next';
 
 import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
 import withProtect from '../middleware/withProtect';
-import User from '../models/User';
+import Project from '../models/Project';
 
-const deleteUser = async (
+const getProject = async (
 	req: ExtendedNextApiRequest,
 	res: NextApiResponse
 ) => {
-	try {
-		await req.user.remove();
+	const { _id } = req.query;
 
-		res.status(200).json(req.user);
+	try {
+		const project = await Project.findOne({ _id, owner: req.user._id });
+
+		if (!project) {
+			res.status(404).json({});
+		}
+
+		res.status(200).json(project);
 	} catch (error) {
 		console.log(error);
 		res.status(500).json(error);
 	}
 };
 
-export default withProtect(deleteUser);
+export default withProtect(getProject);

@@ -12,10 +12,10 @@ const createUser = async (
 		await user.save();
 		const token = await user.generateAuthToken();
 
-		return res.status(201).json({ user, token });
+		res.status(201).json({ user, token });
 	} catch (error) {
 		console.log(error);
-		return res.status(400).json(error);
+		res.status(400).json(error);
 	}
 };
 

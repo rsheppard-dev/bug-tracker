@@ -10,10 +10,10 @@ const login = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 		const user = await User.findByCredentials(email, password);
 		const token = await user.generateAuthToken();
 
-		return res.status(200).json({ user, token });
+		res.status(200).json({ user, token });
 	} catch (error) {
 		console.log(error);
-		return res.status(400).json(error);
+		res.status(400).json(error);
 	}
 };
 

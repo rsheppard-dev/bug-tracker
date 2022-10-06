@@ -1,5 +1,14 @@
+import { Types } from 'mongoose';
+
 export default interface IProject {
-	projectName: string;
+	title: string;
 	description: string;
+	owner: Types.ObjectId;
+	projectManager: Types.ObjectId;
+	developers: [Types.ObjectId];
+	submitters: [Types.ObjectId];
+	tickets: [Types.ObjectId];
 	createdAt: Date;
+	deadline: Date;
+	archived: boolean;
 }

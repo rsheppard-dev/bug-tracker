@@ -8,9 +8,9 @@ const getProfile = async (
 	res: NextApiResponse
 ) => {
 	try {
-		return res.status(200).json(req.user);
+		res.status(200).json(req.user);
 	} catch (error) {
-		return res.status(400).json(error);
+		res.status(400).json(error);
 	}
 };
 

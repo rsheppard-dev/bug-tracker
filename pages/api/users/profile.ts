@@ -5,6 +5,7 @@ import ExtendedNextApiRequest from '../../../interfaces/ExtendedNextApiRequest';
 import getProfile from '../../../apis/getProfile';
 import connectMongo from '../../../db/mongoose';
 import deleteUser from '../../../apis/deleteUser';
+import updateUser from '../../../apis/updateUser';
 
 export default async function handler(
 	req: ExtendedNextApiRequest,
@@ -20,6 +21,8 @@ export default async function handler(
 	switch (req.method) {
 		case 'GET':
 			return getProfile(req, res);
+		case 'PATCH':
+			return updateUser(req, res);
 		case 'DELETE':
 			return deleteUser(req, res);
 		default:

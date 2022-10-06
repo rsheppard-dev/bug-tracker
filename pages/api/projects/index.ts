@@ -1,39 +1,28 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiResponse } from 'next';
 
+import createProject from '../../../apis/createProject';
+import GetAllProjects from '../../../apis/GetAllProjects';
 import connectMongo from '../../../db/mongoose';
-import Project from '../../../models/Project';
+import ExtendedNextApiRequest from '../../../interfaces/ExtendedNextApiRequest';
 
-export default async function projects(
-	req: NextApiRequest,
+export default async function handler(
+	req: ExtendedNextApiRequest,
 	res: NextApiResponse
 ) {
-	await connectMongo();
-
-	// create a new project
-
-	if (req.method === 'POST') {
-		try {
-			const project = new Project(req.body);
-			await project.save();
-
-			res.status(201).json(project);
-		} catch (error) {
-			console.log(error);
-			res.status(400).json(error);
-		}
+	try {
+		await connectMongo();
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(error);
 	}
 
-	// get a list of all projects
-
-	if (req.method === 'GET') {
-		try {
-			const project = await Project.find({});
-
-			res.status(200).json(project);
-		} catch (error) {
-			console.log(error);
-			res.status(500).json(error);
-		}
+	switch (req.method) {
+		case 'POST':
+			return createProject(req, res);
+		case 'GET':
+			return GetAllProjects(req, res);
+		default:
+			break;
 	}
 }

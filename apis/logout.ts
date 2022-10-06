@@ -11,10 +11,10 @@ const logout = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 
 		await req.user.save();
 
-		return res.send({});
+		res.send({});
 	} catch (error) {
 		console.log(error);
-		return res.status(500).json(error);
+		res.status(500).json(error);
 	}
 };
 

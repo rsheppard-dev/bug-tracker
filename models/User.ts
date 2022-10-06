@@ -1,11 +1,13 @@
 import { Schema, Model, model, models } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
+import isMobilePhone from 'validator/lib/isMobilePhone';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import IUser from '../interfaces/IUser';
 import IUserMethods from '../interfaces/IUserMethods';
 import UserModel from '../interfaces/UserModel';
+import Project from './Project';
 
 // schema
 const userSchema = new Schema<IUser, UserModel, IUserMethods>({
@@ -31,6 +33,16 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
 			}
 		},
 	},
+	phone: {
+		type: String,
+		required: true,
+		trim: true,
+		validate(value: string) {
+			if (!isMobilePhone(value)) {
+				throw new Error('Phone number is invalid.');
+			}
+		},
+	},
 	password: {
 		type: String,
 		required: true,
@@ -53,6 +65,10 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
 		lowercase: true,
 		default: 'submitter',
 	},
+	createdAt: {
+		type: Date,
+		default: Date.now,
+	},
 	tokens: [
 		{
 			token: {
@@ -61,6 +77,13 @@ const userSchema = new Schema<IUser, UserModel, IUserMethods>({
 			},
 		},
 	],
+});
+
+// virtuals
+userSchema.virtual('projects', {
+	ref: 'Project',
+	localField: '_id',
+	foreignField: 'owner',
 });
 
 // methods
@@ -115,7 +138,15 @@ userSchema.pre('save', async function (next) {
 	next();
 });
 
+userSchema.pre('remove', async function (next) {
+	const user = this;
+
+	await Project.deleteMany({ owner: user._id });
+
+	next();
+});
+
 // model
-const User = model<IUser, UserModel>('User', userSchema);
+const User = models.User || model<IUser, UserModel>('User', userSchema);
 
 export default User;
