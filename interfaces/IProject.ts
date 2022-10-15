@@ -9,6 +9,7 @@ export default interface IProject {
 	submitters: [Types.ObjectId];
 	tickets: [Types.ObjectId];
 	createdAt: Date;
+	updatedAt: Date;
 	deadline: Date;
 	archived: boolean;
 }

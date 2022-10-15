@@ -2,12 +2,12 @@ import type { NextApiResponse } from 'next';
 
 import nc from 'next-connect';
 
-import auth from '../../../middleware/auth';
-import getProject from '../../../lib/apis/getProject';
-import ExtendedNextApiRequest from '../../../interfaces/ExtendedNextApiRequest';
-import connectMongo from '../../../db/mongoose';
-import updateProject from '../../../lib/apis/updateProject';
-import deleteProject from '../../../lib/apis/deleteProject';
+import ExtendedNextApiRequest from '../../../../interfaces/ExtendedNextApiRequest';
+import auth from '../../../../middleware/auth';
+import getProfile from '../../../../lib/apis/getProfile';
+import connectMongo from '../../../../db/mongoose';
+import deleteUser from '../../../../lib/apis/deleteUser';
+import updateUser from '../../../../lib/apis/updateUser';
 
 const handler = nc<ExtendedNextApiRequest, NextApiResponse>({
 	onError: (error, req, res, next) => {
@@ -21,27 +21,27 @@ const handler = nc<ExtendedNextApiRequest, NextApiResponse>({
 	.get(auth, async (req, res) => {
 		try {
 			await connectMongo();
-			getProject(req, res);
+			getProfile(req, res);
 		} catch (error: any) {
-			throw new Error('Failed to get project.');
+			throw new Error('Failed to get profile.');
 		}
 	})
 
 	.patch(auth, async (req, res) => {
 		try {
 			await connectMongo();
-			updateProject(req, res);
+			updateUser(req, res);
 		} catch (error) {
-			throw new Error('Failed to update project.');
+			throw new Error('Failed to update profile.');
 		}
 	})
 
 	.delete(auth, async (req, res) => {
 		try {
 			await connectMongo();
-			deleteProject(req, res);
+			deleteUser(req, res);
 		} catch (error) {
-			throw new Error('Failed to delete project.');
+			throw new Error('Failed to delete user.');
 		}
 	});
 

@@ -1,6 +1,8 @@
 import { NextApiResponse } from 'next';
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import User from '../models/User';
+
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
+import User from '../../models/User';
+import { sendWelcomeEmail } from '../emails/account';
 
 const createUser = async (
 	req: ExtendedNextApiRequest,
@@ -10,6 +12,7 @@ const createUser = async (
 
 	try {
 		await user.save();
+		sendWelcomeEmail(user.email, user.firstName);
 		const token = await user.generateAuthToken();
 
 		res.status(201).json({ user, token });

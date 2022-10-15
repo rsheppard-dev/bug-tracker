@@ -1,8 +1,7 @@
 import { NextApiResponse } from 'next';
 
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
-import User from '../models/User';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
+import User from '../../models/User';
 
 const getUser = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 	const { _id } = req.query;
@@ -21,4 +20,4 @@ const getUser = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 	}
 };
 
-export default withProtect(getUser);
+export default getUser;

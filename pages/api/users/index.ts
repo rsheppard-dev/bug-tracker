@@ -1,27 +1,26 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiResponse } from 'next';
+
+import nc from 'next-connect';
 
 import connectMongo from '../../../db/mongoose';
 import ExtendedNextApiRequest from '../../../interfaces/ExtendedNextApiRequest';
-import createUser from '../../../apis/createUser';
-import getAllUsers from '../../../apis/getAllUsers';
+import createUser from '../../../lib/apis/createUser';
 
-const handler = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
+const handler = nc<ExtendedNextApiRequest, NextApiResponse>({
+	onError: (error, req, res, next) => {
+		console.log(error.stack);
+		res.status(400).end(error.message);
+	},
+	onNoMatch: (req, res) => {
+		res.status(404).end('This page was not found.');
+	},
+}).post(async (req, res) => {
 	try {
 		await connectMongo();
-	} catch (error) {
-		console.log(error);
-		res.status(500).json(error);
+		createUser(req, res);
+	} catch (error: any) {
+		throw new Error('Failed to create user.');
 	}
-
-	switch (req.method) {
-		case 'POST':
-			return createUser(req, res);
-		case 'GET':
-			return getAllUsers(req, res);
-		default:
-			break;
-	}
-};
+});
 
 export default handler;

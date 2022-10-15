@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
-import Project from '../models/Project';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
+import Project from '../../models/Project';
 
 const updateProject = async (
 	req: ExtendedNextApiRequest,
@@ -20,7 +19,7 @@ const updateProject = async (
 
 	try {
 		const project = await Project.findOne({ _id, owner: req.user._id });
-		console.log(project);
+
 		if (!project) {
 			res.status(404).json({});
 		}
@@ -35,4 +34,4 @@ const updateProject = async (
 	}
 };
 
-export default withProtect(updateProject);
+export default updateProject;

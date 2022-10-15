@@ -1,8 +1,7 @@
 import { NextApiResponse } from 'next';
 
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
-import User from '../models/User';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
+import User from '../../models/User';
 
 const getAllUsers = async (
 	req: ExtendedNextApiRequest,
@@ -18,4 +17,4 @@ const getAllUsers = async (
 	}
 };
 
-export default withProtect(getAllUsers);
+export default getAllUsers;

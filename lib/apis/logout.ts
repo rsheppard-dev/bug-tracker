@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
 
 const logout = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 	try {
@@ -18,4 +17,4 @@ const logout = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 	}
 };
 
-export default withProtect(logout);
+export default logout;

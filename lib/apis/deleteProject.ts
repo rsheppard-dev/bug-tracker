@@ -1,8 +1,7 @@
 import { NextApiResponse } from 'next';
 
-import Project from '../models/Project';
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
+import Project from '../../models/Project';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
 
 const deleteProject = async (
 	req: ExtendedNextApiRequest,
@@ -27,4 +26,4 @@ const deleteProject = async (
 	}
 };
 
-export default withProtect(deleteProject);
+export default deleteProject;

@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
 
 const updateUser = async (
 	req: ExtendedNextApiRequest,
@@ -36,4 +35,4 @@ const updateUser = async (
 	}
 };
 
-export default withProtect(updateUser);
+export default updateUser;

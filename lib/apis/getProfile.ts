@@ -1,7 +1,6 @@
 import { NextApiResponse } from 'next';
 
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
 
 const getProfile = async (
 	req: ExtendedNextApiRequest,
@@ -14,4 +13,4 @@ const getProfile = async (
 	}
 };
 
-export default withProtect(getProfile);
+export default getProfile;

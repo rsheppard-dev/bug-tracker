@@ -4,8 +4,10 @@ export default interface IUser {
 	email: string;
 	phone: string;
 	password: string;
+	avatar: Buffer;
 	role: 'admin' | 'manager' | 'developer' | 'submitter';
 	createdAt: Date;
+	updatedAt: Date;
 	tokens: [
 		{
 			token: string;

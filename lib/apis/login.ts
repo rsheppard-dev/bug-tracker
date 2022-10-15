@@ -1,7 +1,7 @@
 import { NextApiResponse } from 'next';
 
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import User from '../models/User';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
+import User from '../../models/User';
 
 const login = async (req: ExtendedNextApiRequest, res: NextApiResponse) => {
 	const { email, password } = req.body;

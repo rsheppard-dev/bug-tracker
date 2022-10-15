@@ -1,4 +1,4 @@
-import { Schema, Model, model, models } from 'mongoose';
+import { Schema, model, models, Model } from 'mongoose';
 import isEmail from 'validator/lib/isEmail';
 import isMobilePhone from 'validator/lib/isMobilePhone';
 import bcrypt from 'bcryptjs';
@@ -10,74 +10,78 @@ import UserModel from '../interfaces/UserModel';
 import Project from './Project';
 
 // schema
-const userSchema = new Schema<IUser, UserModel, IUserMethods>({
-	firstName: {
-		type: String,
-		required: true,
-		trim: true,
-	},
-	lastName: {
-		type: String,
-		required: true,
-		trim: true,
-	},
-	email: {
-		type: String,
-		required: true,
-		unique: true,
-		trim: true,
-		lowercase: true,
-		validate(value: string) {
-			if (!isEmail(value)) {
-				throw new Error('Email is invalid.');
-			}
+const userSchema = new Schema<IUser, UserModel, IUserMethods>(
+	{
+		firstName: {
+			type: String,
+			required: true,
+			trim: true,
 		},
-	},
-	phone: {
-		type: String,
-		required: true,
-		trim: true,
-		validate(value: string) {
-			if (!isMobilePhone(value)) {
-				throw new Error('Phone number is invalid.');
-			}
+		lastName: {
+			type: String,
+			required: true,
+			trim: true,
 		},
-	},
-	password: {
-		type: String,
-		required: true,
-		trim: true,
-		minlength: [6, 'Password must be at least 6 characters.'],
-		validate(value: string) {
-			if (value.toLowerCase().includes('password')) {
-				throw new Error('Password cannot contain "password".');
-			}
-		},
-	},
-	role: {
-		type: String,
-		enum: {
-			values: ['admin', 'manager', 'developer', 'submitter'],
-			message: '{VALUE} is not supported.',
-		},
-		required: true,
-		trim: true,
-		lowercase: true,
-		default: 'submitter',
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-	tokens: [
-		{
-			token: {
-				type: String,
-				required: true,
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+			trim: true,
+			lowercase: true,
+			validate(value: string) {
+				if (!isEmail(value)) {
+					throw new Error('Email is invalid.');
+				}
 			},
 		},
-	],
-});
+		phone: {
+			type: String,
+			required: true,
+			trim: true,
+			validate(value: string) {
+				if (!isMobilePhone(value)) {
+					throw new Error('Phone number is invalid.');
+				}
+			},
+		},
+		password: {
+			type: String,
+			required: true,
+			trim: true,
+			minlength: [6, 'Password must be at least 6 characters.'],
+			validate(value: string) {
+				if (value.toLowerCase().includes('password')) {
+					throw new Error('Password cannot contain "password".');
+				}
+			},
+		},
+		avatar: {
+			type: Buffer,
+		},
+		role: {
+			type: String,
+			enum: {
+				values: ['admin', 'manager', 'developer', 'submitter'],
+				message: '{VALUE} is not supported.',
+			},
+			required: true,
+			trim: true,
+			lowercase: true,
+			default: 'submitter',
+		},
+		tokens: [
+			{
+				token: {
+					type: String,
+					required: true,
+				},
+			},
+		],
+	},
+	{
+		timestamps: true,
+	}
+);
 
 // virtuals
 userSchema.virtual('projects', {
@@ -93,6 +97,7 @@ userSchema.methods.toJSON = function () {
 
 	delete userObject.password;
 	delete userObject.tokens;
+	delete userObject.avatar;
 
 	return userObject;
 };
@@ -146,7 +151,7 @@ userSchema.pre('remove', async function (next) {
 	next();
 });
 
-// model
-const User = models.User || model<IUser, UserModel>('User', userSchema);
+const User =
+	(models.User as UserModel) || model<IUser, UserModel>('User', userSchema);
 
 export default User;

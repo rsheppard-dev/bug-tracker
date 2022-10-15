@@ -1,8 +1,7 @@
 import { NextApiResponse } from 'next';
 
-import Project from '../models/Project';
-import ExtendedNextApiRequest from '../interfaces/ExtendedNextApiRequest';
-import withProtect from '../middleware/withProtect';
+import Project from '../../models/Project';
+import ExtendedNextApiRequest from '../../interfaces/ExtendedNextApiRequest';
 
 const createProject = async (
 	req: ExtendedNextApiRequest,
@@ -22,4 +21,4 @@ const createProject = async (
 	}
 };
 
-export default withProtect(createProject);
+export default createProject;
