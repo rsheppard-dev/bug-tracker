@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next';
 export default interface ExtendedNextApiRequest extends NextApiRequest {
-	user: any;
+	user: Partial<any>;
 	file: {
 		buffer: Buffer;
 	};

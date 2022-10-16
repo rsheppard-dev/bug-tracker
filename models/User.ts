@@ -102,6 +102,11 @@ userSchema.methods.toJSON = function () {
 	return userObject;
 };
 
+userSchema.methods.fullName = function () {
+	const user = this;
+	return `${user.firstName} ${user.lastName}`;
+};
+
 userSchema.methods.generateAuthToken = async function () {
 	const user = this;
 	const secret = process.env.JWT_SECRET!;

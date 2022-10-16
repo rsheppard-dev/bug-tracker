@@ -23,4 +23,6 @@ const handler = nc<ExtendedNextApiRequest, NextApiResponse>({
 	}
 });
 
+export const config = {};
+
 export default handler;
